@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Onest&display=swap');
+
+* {
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: 'Onest', sans-serif;
+}
+
+#cont1 {
+  margin-left: 12px;
+}
+
+#navBtn {
+  font-size: 1.2rem;
+  border: none;
+}
+
+#navBtn:focus,
+#navBtn:active {
+  outline: none !important;
+}
+
+.list:hover {
+  color: white !important;
+  background: #555a5e !important;
+}
+
+a:hover {
+  color: white !important;
+}
+
+i:hover {
+  color: white !important;
+}
+
+.tabs:hover {
+  color: black !important;
+}
+
+.tab:hover {
+  color: grey !important;
+}

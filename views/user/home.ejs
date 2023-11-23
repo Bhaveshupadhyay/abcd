@@ -1,0 +1,94 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style></style>
+
+	<header class="header1">
+	  	<%- include('../includes/navbar.ejs'); %>
+	</header>
+
+  	<section>
+	    <div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+	      <div class="row">
+	      	<%- include('../includes/navbar1.ejs'); %>
+
+	        <%- include('../includes/navbar2.ejs'); %>
+
+	        <div class="col border bg-light text-black" id="section1">
+				<div class="pt-4 ms-3">
+		        	<p style="font-size: 13px;">
+		        		<i class="fa-solid fa-house me-2" style="color: #333333;"></i>
+		        		<a href="/v1/home" class="me-2 tab" style="text-decoration: none; color: black;">Dashboard</a>
+		        	</p>
+		        </div>
+
+				<div class="row mt-4 d-flex justify-content-around ms-3">
+					<a href="/v1/orders" class="col pt-4 pb-4 pe-3 ps-3 d-flex flex-column justify-content-center align-items-end me-5" style="background-color: rgb(50, 197, 210); text-decoration: none; color: white; font-size: 34px; border-radius: 10px;">
+							<span id="ordersCount"><%= orders %></span> 
+							<p style="font-size: 16px;">Orders</p>
+					</a>
+					<a href="/v1/products" class="col pt-4 pb-4 pe-3 ps-3 d-flex flex-column justify-content-center align-items-end me-5" style="background-color: rgb(18, 128, 245); text-decoration: none; color: white; font-size: 34px; border-radius: 10px;">
+							<span id="productsCount"><%= products %></span> 
+							<p style="font-size: 16px;"> Products</p>
+					</a>
+					<a href="/v1/customers" class="col pt-4 pb-4 pe-3 ps-3 d-flex flex-column justify-content-center align-items-end me-5" style="background-color: rgb(117, 182, 249); text-decoration: none; color: white; font-size: 34px; border-radius: 10px;">
+							<span id="customersCount"><%= customers %></span> 
+							<p style="font-size: 16px;"> Customers</p>
+					</a>
+					<a href="#" class="col pt-4 pb-4 pe-3 ps-3 d-flex flex-column justify-content-center align-items-end me-5" style="background-color: rgb(7, 79, 157); text-decoration: none; color: white; font-size: 34px; border-radius: 10px;">
+							<span id="reviewsCount"><%= reviews %></span>
+							<p style="font-size: 16px;"> Reviews</p>
+					</a>
+				</div>
+	        </div>
+	      </div>
+	    </div>
+  	</section>
+
+  	<script src="/script3.js"></script>
+
+  	<script>
+  		const ordersElement = document.getElementById('ordersCount');
+  		const productsElement = document.getElementById('productsCount');
+  		const customersElement = document.getElementById('customersCount');
+  		const orders = <%= orders %>;
+  		const products = <%= products %>;
+  		const customers = <%= customers %>;
+  		let currentOrders = 0;
+  		let currentProducts = 0;
+  		let currentCustomers = 0;
+
+  		function updateOrdersCount1() {
+		    if (currentOrders < orders) { // Assuming you want to stop at 100
+		      currentOrders++;
+		      ordersElement.textContent = currentOrders;
+		    }
+		}
+
+		function updateOrdersCount2() {
+			if (currentProducts < products) { // Assuming you want to stop at 100
+		      currentProducts++;
+		      productsElement.textContent = currentProducts;
+		    }
+		}
+
+		function updateOrdersCount3() {
+			if (currentCustomers < customers) { // Assuming you want to stop at 100
+		      currentCustomers++;
+		      customersElement.textContent = currentCustomers;
+		    }
+		}
+
+		const intervalId1 = setInterval(updateOrdersCount1, 10);
+		const intervalId2 = setInterval(updateOrdersCount2, 10);
+		const intervalId3 = setInterval(updateOrdersCount3, 10);
+
+		if (currentOrders > orders) clearInterval(intervalId1);
+		if (currentProducts > products) clearInterval(intervalId2);
+		if (currentCustomers > customers) clearInterval(intervalId3);
+  	</script>
+
+  <%- include("../includes/end.ejs"); %>
+</body>

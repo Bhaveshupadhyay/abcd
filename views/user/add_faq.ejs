@@ -1,0 +1,169 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style>
+		body {
+			font-family: Roboto,sans-serif;
+		}
+
+		label {
+			font-size: 14px;
+		}
+
+		.tabs:hover {
+			color: black !important;
+		}
+
+		/* Styles for the video uploader container */
+	    .video-uploader {
+	      display: block;
+	      position: relative;
+	      overflow: hidden;
+	      border: 2px dashed #ccc;
+	      border-radius: 5px;
+	      padding: 20px;
+	      text-align: center;
+	      cursor: pointer;
+	    }
+
+	    /* Styles for the file input element (hidden) */
+	    .file-input {
+	      display: none;
+	    }
+
+	    /* Styles for the file label */
+	    .file-label {
+	      display: block;
+	      font-size: 16px;
+	      color: #555;
+	      cursor: pointer;
+	    }
+
+	    /* Styles for the file icon */
+	    .file-label i {
+	      margin-right: 5px;
+	    }
+
+	    /* Styles for the file name display */
+	    .file-name {
+	      margin-top: 10px;
+	      font-size: 14px;
+	      color: #999;
+	    }
+
+	    /* Styles for the file uploader on hover */
+	    .video-uploader:hover {
+	      background-color: #f7f7f7;
+	    }
+
+	    .fa-cloud-arrow-up:hover {
+	    	color: black !important;
+	    }
+	</style>
+
+	<header class="header1">
+	  	<%- include('../includes/navbar.ejs'); %>
+	</header>
+
+  	<section>
+	    <div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+	      	<div class="row">
+		      	<%- include('../includes/navbar1.ejs'); %>
+
+	        	<%- include('../includes/navbar2.ejs'); %>
+
+		        <div class="col border text-black" id="section1" style="background: #eef1f5;">
+		        	<div class="pt-4 ms-3">
+		        		<p style="font-size: 13px;">
+		        			<i class="fa-solid fa-house me-2" style="color: #333333;"></i>
+		        			<a href="/v1/home" class="me-2 tabs" style="text-decoration: none; color: black;">Dashboard</a><span class="me-2">/</span>
+		        			<a href="/v1/faq" class="me-2 tabs" style="text-decoration: none; color: black;">FAQ</a><span class="me-2">/</span>
+		        			<a class="me-2 tabs" style="text-decoration: none; color: grey;">Add FAQ</a>
+		        		</p>
+		        	</div>
+		        	<div class="row ms-2" style="background: #eef1f5;">
+		        		<div class="col-12 text-center">
+					        <% if(errorMessage) { %>
+					        	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+					        <% } %>
+				        </div>
+		        		<div class="col-12 col-sm-12 col-lg-10">
+		        			<div class="row" style="background: #eef1f5;">
+		        				<form action="/v1/postAddFaq" method="POST">
+			        				<div class="col-12 p-3" style="background: #ffffff; border-radius: 5px;">
+			        					<div class="mb-3">
+			        						<select class="form-select" id="language" name="lang">
+			        							<option value="" selected>Please select a Language</option>
+			        							<option value="fr">Fr</option>
+			        							<option value="en_US">en_US</option>
+			        						</select>
+			        					</div>
+										<div class="mb-3">
+										  	<label for="Textarea1" class="form-label">Question</label>
+										  	<textarea class="form-control" name="question" id="Textarea1" rows="5"></textarea>
+										</div>
+										<div class="mb-3">
+										  	<label for="Textarea2" class="form-label">Answer</label>
+										  	<textarea class="form-control" name="answer" id="Textarea2" rows="5"></textarea>
+										</div>
+			        				</div>
+		        			</div>
+		        		</div>
+
+		        		<div class="col-12 col-sm-12 col-lg-2" style="background: #ffffff;">
+			        			<div class="row">
+			        				<div class="col-12 p-2" style="background: #ffffff; border-radius: 5px;">
+			        					<div class="mt-2 d-none" id="btnDiv">
+			        						<button type="submit" class="btn" style="background: #0dcaf0; font-size: 14px; padding: 7px 12px; color: #FFFFFF;">Save</button>
+			        					</div>
+			        				</div>
+			        			</div>
+		        			</form>
+		        		</div>
+		        	</div>
+		        </div>
+	      	</div>
+	    </div>
+	</section>
+
+	<section>
+		<div class="container-fluid" style="height: 100px; background: #eef1f5;"></div>
+	</section>
+
+	<script src="/script3.js"></script>
+
+	<script>
+		globalThis.document.addEventListener('DOMContentLoaded', () => {
+			const langSelect = document.getElementById("language");
+
+			const btn = document.getElementById("btnDiv")
+
+	        let lang = '';
+
+	      	// console.log(langSelect);
+
+		    langSelect.addEventListener("change", function () {
+		        const selectedValue = langSelect.value;
+
+		        lang = selectedValue;
+
+		        // console.log(selectedValue);
+
+		        if (selectedValue === '') {
+		          alert("Please select a language.");
+		          btn.classList.remove('d-block');
+		          btn.classList.add('d-none');                        
+		          return;
+		        }
+		        else {
+		        	btn.classList.remove('d-none');
+		        	btn.classList.add('d-block');
+		        }
+		    });
+		})
+	</script>
+
+  <%- include("../includes/end.ejs"); %>
+</body>

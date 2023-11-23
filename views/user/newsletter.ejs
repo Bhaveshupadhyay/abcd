@@ -1,0 +1,313 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style>
+		* {
+			font-family: Roboto,sans-serif;
+		}
+		.pgt2 {
+	      	background: white;
+	      	color: black;
+	      	border: 2px solid black;
+	      	text-decoration: none;
+	      	border-radius: 25px;
+	      	font-weight: 500;
+	    }
+	    .page-item a:hover {
+	    	background: red;
+	    	color: white;
+	    }
+	    .iactive {
+      		background: black;
+      		color: white;
+    	}
+
+    	#firstPagination {
+    		display: none;
+    	}
+
+    	.fa-pen:hover {
+    		color: #33a413 !important;
+    	}
+
+    	.fa-trash:hover {
+    		color: #f50000 !important;
+    	}
+
+    	.tabs:hover {
+    		color: black !important;
+    	}
+
+    	.tab:hover {
+    		color: grey !important;
+    	}
+
+    	@media (max-width: 500px) {
+    		#secondPagination {
+    			display: none;
+    		}
+    		#firstPagination {
+    			margin-left: 50px;
+    			display: block;
+    		    overflow-x: auto;
+    		}
+    	}
+	</style>
+
+	<header class="header1">
+	  	<%- include('../includes/navbar.ejs'); %>
+	</header>
+
+  	<section>
+	    <div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+	      <div class="row">
+	      	<%- include('../includes/navbar1.ejs'); %>
+
+	        <%- include('../includes/navbar2.ejs'); %>
+
+	        <div class="col border bg-light text-black" id="section1">
+				<div class="pt-4 ms-3">
+		        	<p style="font-size: 13px;">
+		        		<i class="fa-solid fa-house me-2" style="color: #333333;"></i>
+		        		<a href="/v1/home" class="me-2 tabs" style="text-decoration: none; color: black;">Dashboard</a><span class="me-2">/</span>
+		        		<a href="/v1/products" class="me-2 tabs" style="text-decoration: none; color: black;">Ecommerce</a><span class="me-2">/</span>
+		        		<a class="me-2 tab" style="text-decoration: none; color: grey;">News Letter</a>
+		        	</p>
+		        </div>
+
+				<div class="mt-2 text-center">
+		        	<% if(errorMessage) { %>
+		          		<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+		        	<% } %>
+		    	</div>
+
+				<div class="mt-4 d-flex justify-content-between">
+					<div class="dropdown">
+					  <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					    Bulk Actions
+					  </button>
+					  <ul class="dropdown-menu">
+					    <li><a class="dropdown-item" href="#">Action</a></li>
+					    <li><a class="dropdown-item" href="#">Another action</a></li>
+					    <li><a class="dropdown-item" href="#">Something else here</a></li>
+					  </ul>
+					</div>
+					<form class="d-flex" role="search">
+				        <input class="form-control me-2" id="search" type="search" placeholder="Search" aria-label="Search">
+				    </form>
+				</div>
+
+				<div class="mt-5 table-responsive">
+					<table class="table table-striped table-hover">
+						<thead>
+						    <tr>
+						      <th scope="col">
+						      	<input class="table-check-all" data-set=".dataTable .checkboxes" type="checkbox">
+						      </th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">ID</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">EMAIL</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">NAME</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">CREATED AT</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">STATUS</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">OPERATIONS</th>
+						    </tr>
+						</thead>
+						<tbody id="dataTableBody">
+							<% if (data.length >= 1) { %>
+								<% data.forEach((i) => { %>
+								    <tr>
+								      <th><input class="table-check-all" data-set=".dataTable .checkboxes" type="checkbox"></th>
+								      <th style="font-size: 14px; color: #212529;"><%= i.id %></th>
+								      <td class="tName" style="font-size: 14px; color: #212529;">
+								      	 <%= i.email %>
+								      </td>
+								      <td class="tAmt" style="font-size: 14px; color: #212529;">-</td>
+								      <td class="tSA" style="font-size: 14px; color: #212529;"><%= i.created_at %></td>
+								      <td class="tStatus d-flex justify-content-center align-items-center"><span class="p-2 border text-capitalize text-white" style="font-size: 10.5px; color: #FFFFFF; border-radius: 5px; background: #36c6d3;"><%= i.status %></span></td>
+								      <td>
+								      	<div class="d-flex justify-content-center">
+										    <form id="deleteForm<%= i.id %>" action="/v1/deleteNewsletter" method="POST">
+									      		<input type="hidden" name="product_id" value="<%= i.id %>">
+										      	<button type="button" class="btn" 
+										      			onclick="confirmDelete('<%= i.id %>');">
+										      		<i class="fa-solid fa-trash" style="color: #f50000;"></i>
+										      	</button>
+										    </form>
+								      	</div>
+								      </td>
+								    </tr>
+								<% }) %>
+							<% } %>
+						</tbody>
+					</table>
+				</div>
+	        </div>
+	      </div>
+	    </div>
+  	</section>
+
+  	<section>
+  		<div class="container-fluid pt-5 bg-light" id="secondPagination">
+		    <div class="row">
+		        <% if (pageCount >= 1) { %>
+		          <div class="col-xxl mt-3 d-flex justify-content-center">
+		            <nav aria-label="Page navigation example">
+		              <ul class="pagination justify-content-center">
+		                <li class="page-item">
+		                  <a href="#" class="page-link" aria-label="Previous" style="color: white; background: black; font-weight: 500;" id="prevPageLink">
+		                    &lt;
+		                  </a>
+		                </li>
+		                <li class="page-item ms-2 me-2">
+		                  <a href="/v1/newsletter/?page=1" class="page-link pgt2 iactive" aria-label="Page 1">
+		                    1
+		                  </a>
+		                </li>
+		                <li class="page-item me-2">
+		                  <a href="/v1/newsletter/?page=2" class="page-link pgt2" aria-label="Page 2">
+		                    2
+		                  </a>
+		                </li>
+		                <li class="page-item me-2">
+		                  <a href="/v1/newsletter/?page=3" class="page-link pgt2" aria-label="Page 3">
+		                    3
+		                  </a>
+		                </li>
+		                <li class="page-item me-2">
+		                  <a href="/v1/newsletter/?page=4" class="page-link pgt2" aria-label="Page 3">
+		                    4
+		                  </a>
+		                </li>
+		                <li class="page-item me-2">
+		                  <a href="/v1/newsletter/?page=5" class="page-link pgt2" aria-label="Page 3">
+		                    5
+		                  </a>
+		                </li>
+		                <li class="page-item">
+		                  <a href="#" class="page-link" aria-label="Next" style="color: white; background: black; font-weight: 500;" id="nextPageLink">
+		                    &gt;
+		                  </a>
+		                </li>
+		              </ul>
+		            </nav>
+		          </div>
+		        <% } %>
+		    </div>
+    	</div>
+
+    	<div class="container-fluid pt-5 bg-light" id="firstPagination">
+    		<div class="row">
+		        <% if (pageCount >= 1) { %>
+		          	<div class="col-xxl mt-3 d-flex justify-content-center">
+		            	<nav aria-label="Page navigation example">
+		              		<ul class="pagination justify-content-center">
+				                <li class="page-item">
+				                  	<a href="#" class="page-link" aria-label="Previous" style="color: white; background: black; font-weight: 500;" id="prevPageLink">
+				                    	&lt;
+				                  	</a>
+				                </li>
+				                <li class="page-item ms-2 me-2">
+				                  <a href="/v1/newsletter/?page=1" class="page-link pgt2 iactive" aria-label="Page 1">
+				                    1
+				                  </a>
+				                </li>
+				                <li class="page-item me-2">
+				                  <a href="/v1/newsletter/?page=2" class="page-link pgt2" aria-label="Page 2">
+				                    2
+				                  </a>
+				                </li>
+				                <li class="page-item me-2">
+				                  <a href="/v1/newsletter/?page=3" class="page-link pgt2" aria-label="Page 3">
+				                    3
+				                  </a>
+				                </li>
+				                <li class="page-item me-2">
+				                  <a href="/v1/newsletter/?page=4" class="page-link pgt2" aria-label="Page 3">
+				                    4
+				                  </a>
+				                </li>
+				                <li class="page-item">
+				                  <a href="#" class="page-link" aria-label="Next" style="color: white; background: black; font-weight: 500;" id="nextPageLink">
+				                    &gt;
+				                  </a>
+				                </li>
+		              		</ul>
+		            	</nav>
+		          	</div>
+		        <% } %>
+		    </div>
+    	</div>
+  	</section>
+
+  	<script src="/script3.js"></script>
+
+  	<script>
+  		globalThis.document.addEventListener('DOMContentLoaded', () => {
+	      	let currentPage = <%= currentPage %>;
+	  		const nextPageLink = document.getElementById("nextPageLink");
+	        const prevPageLink = document.getElementById("prevPageLink");
+	        let p2 = <%= pageCount %>;
+
+	        const pageLink = document.querySelectorAll("#secondPagination .page-link");
+
+	        const searchInput = document.getElementById("search");
+
+	        // console.log(currentPage);
+
+	      	pageLink.forEach(i => {
+		        // console.log(i.textContent, i.classList);
+		        i.classList.remove('iactive');
+		        if (Number(i.textContent) == Number(currentPage)) {
+		          // console.log(i.classList);
+		          i.classList.add('iactive');
+		        }
+	      	})
+
+	      	if(p2 >= 1) {
+		        nextPageLink.addEventListener("click", (e) => {
+		        	// console.log(currentPage);
+		        	if (currentPage == p2) {
+		        		return;
+		        	}
+		          	currentPage++; // Increment the page number
+		          	e.target.setAttribute("href", `/v1/orders/?page=${currentPage}`);
+		        });
+
+		        prevPageLink.addEventListener("click", (e) => {
+			        if (currentPage == 1) {
+			            return;
+			        }
+			        else {
+			            currentPage--;
+			            e.target.setAttribute("href", `/v1/orders/?page=${currentPage}`);
+			        }
+		        });
+		    }
+
+		    const dataTableBody = document.getElementById('dataTableBody');
+		    const rows = Array.from(document.querySelectorAll('#dataTableBody tr'));
+
+		    searchInput.addEventListener('input', function () {
+		      const searchTerm = this.value.toLowerCase();
+
+		      rows.forEach(row => {
+		        const visible = row.innerText.toLowerCase().includes(searchTerm);
+		        row.style.display = visible ? 'table-row' : 'none';
+		      });
+		    });
+	    })
+  	</script>
+
+  	<script>
+  		function confirmDelete(productId) {
+	        const confirmation = window.confirm("Are you sure you want to delete?");
+	        if (confirmation) {
+	            document.getElementById("deleteForm" + productId).submit();
+	        }
+    	}
+  	</script>
+
+  <%- include("../includes/end.ejs"); %>
+</body>

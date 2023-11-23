@@ -1,0 +1,408 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style>
+		body {
+			font-family: Roboto,sans-serif;
+		}
+
+		label {
+			font-size: 14px;
+		}
+
+		.tabs:hover {
+			color: black !important;
+		}
+
+		/* Styles for the video uploader container */
+	    .video-uploader {
+	      display: block;
+	      position: relative;
+	      overflow: hidden;
+	      border: 2px dashed #ccc;
+	      border-radius: 5px;
+	      padding: 20px;
+	      text-align: center;
+	      cursor: pointer;
+	    }
+
+	    /* Styles for the file input element (hidden) */
+	    .file-input {
+	      display: none;
+	    }
+
+	    /* Styles for the file label */
+	    .file-label {
+	      display: block;
+	      font-size: 16px;
+	      color: #555;
+	      cursor: pointer;
+	    }
+
+	    /* Styles for the file icon */
+	    .file-label i {
+	      margin-right: 5px;
+	    }
+
+	    /* Styles for the file name display */
+	    .file-name {
+	      margin-top: 10px;
+	      font-size: 14px;
+	      color: #999;
+	    }
+
+	    /* Styles for the file uploader on hover */
+	    .video-uploader:hover {
+	      background-color: #f7f7f7;
+	    }
+
+	    .fa-cloud-arrow-up:hover {
+	    	color: black !important;
+	    }
+	</style>
+
+	<header class="header1">
+	  	<%- include('../includes/navbar.ejs'); %>
+	</header>
+
+  	<section>
+	    <div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+	      	<div class="row">
+		      	<%- include('../includes/navbar1.ejs'); %>
+
+	        	<%- include('../includes/navbar2.ejs'); %>
+
+		        <div class="col border text-black" id="section1" style="background: #eef1f5;">
+		        	<div class="pt-4 ms-3">
+		        		<p style="font-size: 13px;">
+		        			<i class="fa-solid fa-house me-2" style="color: #333333;"></i>
+		        			<a href="/v1/home" class="me-2 tabs" style="text-decoration: none; color: black;">Dashboard</a><span class="me-2">/</span>
+		        			<a href="/v1/products" class="me-2 tabs" style="text-decoration: none; color: black;">Ecommerce</a><span class="me-2">/</span>
+		        			<a class="me-2 tabs" style="text-decoration: none; color: grey;">Add Product</a>
+		        		</p>
+		        	</div>
+		        	<div class="row ms-2" style="background: #eef1f5;">
+		        		<div class="col-12 text-center">
+					        <% if(errorMessage) { %>
+					        	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+					        <% } %>
+				        </div>
+		        		<div class="col-12 col-sm-12 col-lg-10">
+		        			<div class="row" style="background: #eef1f5;">
+		        				<form action="/v1<% if(editing) { %>/postEditProduct<% } else { %>/post-product<% } %>" method="POST">
+			        				<div class="col-12 p-3" style="background: #ffffff; border-radius: 5px;">
+				        				<div class="mb-3">
+										  	<label for="Input1" class="form-label">Name</label>
+										  	<input type="text" class="form-control" name="name" id="Input1" value="<%= oldInput.name %>">
+										</div>
+										<div class="mb-3">
+										  	<label for="Textarea1" class="form-label">Description</label>
+										  	<textarea class="form-control" name="description" id="Textarea1" rows="5"><%= oldInput.description %></textarea>
+										</div>
+										<div class="mb-3">
+										  	<label for="Textarea2" class="form-label">Content</label>
+										  	<textarea class="form-control" name="content" id="Textarea2" rows="5"><%= oldInput.content %></textarea>
+										</div>
+										<div class="mt-5 video-uploader" id="video-uploader">
+										    <label class="file-label" for="productFile" id="fileLabel">
+										        <i class="fa-solid fa-file-video"></i> Choose Image
+										    </label>
+										    <input type="file" id="productFile" class="file-input" accept="image/*" />
+										    <span id="file_name" name="file_name" class="file-name">
+										    	<% if(editing) { %>
+										    	<%= oldInput.image %><% } else { %>
+										    	No file chosen<% } %>
+										    </span>
+										</div>
+										<div>
+											<button type="button" class="btn border-0" id="upload-button">
+                  								<i class="fa-solid fa-cloud-arrow-up"></i>
+                							</button>
+										</div>
+			        				</div>
+
+			        				<div class="col-12 mt-4 p-3" 
+			        					style="background: #ffffff; border-radius: 5px;">
+			        					<p style="color: #1f64a0;">Overview</p>
+			        					<div class="mb-3">
+										    <label for="Input2">SKU</label>
+										    <input type="text" name="sku" class="form-control" id="Input2" value="<%= oldInput.sku %>">
+										</div>
+										<div class="mb-3">
+										    <label for="Input3">Price</label>
+										    <input type="number" name="price" class="form-control" id="Input3" placeholder="€ 0" step="any" 
+										    	value="<%= oldInput.price %>">
+										</div>
+										<div class="mb-5">
+											<label for="Input4">Barcode (ISBN, UPC, GTIN, etc.)</label>
+										    <input type="text" name="barcode" class="form-control" id="Input4" placeholder="Enter barcode" value="<%= oldInput.barcode %>">
+										</div>
+										<div class="form-check mb-3">
+											<input class="form-check-input" type="checkbox" value="" 
+											id="Input5" name="with_storehouse_management">
+											<label class="form-check-label" for="Input5">
+											    With storehouse management
+											</label>
+										</div>
+										<div class="mb-3">
+										    <label for="Input6" class="form-label">Quantity</label>
+										    <input type="number" class="form-control" name="quantity" id="Input6" value="<% if(editing) { %><%= oldInput.quantity %><% } else { %>0<% } %>">
+										</div>
+										<div class="mb-3">
+											<label for="Input7">Stock status</label>
+											<select class="form-select" name="status" id="Input7">
+											  	<option value="in_stock">In stock</option>
+											  	<option value="out_of_stock">Out of stock</option>
+											  	<option value="on_backorder">On backorder</option>
+											</select>
+										</div>
+										<div class="mb-4">
+											<input type="hidden" name="product_type" value="digital">
+										</div>
+			        				</div>
+		        			</div>
+		        		</div>
+
+		        		<div class="col-12 col-sm-12 col-lg-2" style="background: #ffffff;">
+			        			<div class="row">
+			        				<div class="col-12 p-2" style="background: #ffffff; border-radius: 5px;">
+			        					<p style="color: #1f64a0; font-size: 14px;">Publish</p>
+			        					<div class="mt-2">
+			        						<% if (editing) { %>
+				                            	<input type="hidden" name="product_id" 
+				                            		value="<%= oldInput.id %>">
+				                            <% } %>
+				                            <input type="hidden" id="imageUrl" name="imageUrl"
+				                            	value=<% if(editing) { %><%= oldInput.imageUrl %><% } %>>
+			        						<button type="submit" class="btn" style="background: #0dcaf0; font-size: 14px; padding: 7px 12px; color: #FFFFFF;">Save</button>
+			        						<button type="button" class="btn" style="background: #198754; font-size: 14px; padding: 7px 12px; color: #FFFFFF;">Save & Edit</button>
+			        					</div>
+			        				</div>
+			        				<div class="col-12 mt-4" style="background: #ffffff; border-radius: 5px;">
+			        					<p style="color: #1f64a0; font-size: 14px;">Categories</p>
+			        					<div>
+			        						<div class="form-check">
+											  <input class="form-check-input" type="radio" name="category" id="exampleRadios1" value="1">
+											  <label class="form-check-label" for="exampleRadios1">
+											    Comptes
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="category" id="exampleRadios2" value="31">
+											  <label class="form-check-label" for="exampleRadios2">
+											    Formations
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="category" id="exampleRadios3" value="32">
+											  <label class="form-check-label" for="exampleRadios3">
+											    Services
+											  </label>
+											</div>
+			        					</div>
+			        				</div>
+			        				<div class="col-12 mt-4" style="background: #ffffff; border-radius: 5px;">
+			        					<p style="color: #1f64a0; font-size: 14px;">Product collections</p>
+			        					<div>
+			        						<div class="form-check">
+											  <input class="form-check-input" type="radio" name="slug" id="exampleRadios4" value="1">
+											  <label class="form-check-label" for="exampleRadios4">
+											    Nouveau
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="slug" id="exampleRadios5" value="2">
+											  <label class="form-check-label" for="exampleRadios5">
+											    Meilleures ventes
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="slug" id="exampleRadios6" value="3">
+											  <label class="form-check-label" for="exampleRadios6">
+											    Offre spéciale
+											  </label>
+											</div>
+			        					</div>
+			        				</div>
+			        				<div class="col-12 mt-4" style="background: #ffffff; border-radius: 5px;">
+			        					<p style="color: #1f64a0; font-size: 14px;">Labels</p>
+			        					<div>
+			        						<div class="form-check">
+											  <input class="form-check-input" type="radio" name="label" id="exampleRadios7" value="1">
+											  <label class="form-check-label" for="exampleRadios7">
+											    Populaire🔥
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="label" id="exampleRadios8" value="2">
+											  <label class="form-check-label" for="exampleRadios8">
+											    Nouveau
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="label" id="exampleRadios9" value="3">
+											  <label class="form-check-label" for="exampleRadios9">
+											    PROMO🎁
+											  </label>
+											</div>
+			        					</div>
+			        				</div>
+			        			</div>
+		        			</form>
+		        		</div>
+		        	</div>
+		        </div>
+	      	</div>
+	    </div>
+	</section>
+
+	<section>
+		<div class="container-fluid" style="height: 100px; background: #eef1f5;"></div>
+	</section>
+
+	<script src="/script3.js"></script>
+
+	<script>
+		globalThis.document.addEventListener('DOMContentLoaded', () => {
+			const descriptionContainer = document.getElementById('Textarea1');
+			// console.log(descriptionContainer);
+
+			const category = <%- JSON.stringify(oldInput.category) %>;
+    		const label = <%- JSON.stringify(oldInput.label) %>;
+            const slug = <%- JSON.stringify(oldInput.slug) %>;
+
+			const descriptionLines = descriptionContainer.textContent.replace(/<p>/g, '').replace(/<\/p>/g, '');
+
+			// console.log(descriptionLines);
+
+			descriptionContainer.textContent = descriptionLines;
+
+			// console.log(category, label, slug);
+
+			const radioInputs3 = document.querySelectorAll('input[name="label"]');
+			radioInputs3.forEach(radioInput => {
+			    if (radioInput.value === label) {
+			      radioInput.checked = true;
+			      return;
+			    }
+			});
+
+			const radioInputs2 = document.querySelectorAll('input[name="slug"]');
+			radioInputs2.forEach(radioInput => {
+			    if (radioInput.value === slug) {
+			      radioInput.checked = true;
+			      return;
+			    }
+			});
+
+			const radioInputs1 = document.querySelectorAll('input[name="category"]');
+			radioInputs1.forEach(radioInput => {
+			    if (radioInput.value === category) {
+			      radioInput.checked = true;
+			      return;
+			    }
+			});
+
+			globalThis.document.getElementById('upload-button').addEventListener('click', function(e) {
+	            uploadVideo(this);
+	        });
+
+			document.addEventListener("change", function (event) {
+	          if (event.target.matches(".file-input")) {
+	            const fileInput = event.target;
+	            const fileNameDisplay = fileInput.nextElementSibling;
+
+	            // console.log(fileInput, fileNameDisplay);
+
+	            const file = fileInput.files[0];
+	            // console.log(file);
+	            if (file) {
+	              fileNameDisplay.textContent = file.name;
+	            } else {
+	              fileNameDisplay.textContent = "No file chosen";
+	            }
+	          }
+	        });
+
+	        function uploadVideo(btn) {
+	        	// console.log(btn);
+          		const fileInput = document.getElementById('productFile');
+
+          		const file = fileInput.files[0];
+		        // console.log(file);             
+
+		        if (fileInput.files.length === 0) {
+		            alert('Please select a image to upload.');
+		            btn.disabled = false;
+		            return;
+		        }
+
+		        else if (file) {
+		            // console.log(file.name);
+		            function isImageExtension(extension) {
+		              const ImageExtensions = [".jpg", ".jpeg", ".png"];
+		              return ImageExtensions.includes(extension.toLowerCase());
+		            }
+		            const extension = file.name.match(/\.([^\.]+)$/);
+
+		            if (extension) {
+		              const extractedExtension = extension[1].toLowerCase(); // Convert to lowercase for case-insensitive comparison
+		              const isImage = isImageExtension("." + extractedExtension); // Add dot prefix
+		              // console.log(isImage);
+		              if (!isImage) {
+		                alert('Please select a image to upload.');
+		                btn.disabled = false;
+		                const fileNameDisplay = fileInput.nextElementSibling; // The third sibling is the file-name span
+		                fileNameDisplay.textContent = "No file chosen";
+		                return;
+		              }
+		            } else {
+		              console.log("No extension found");
+		            }
+		        }
+
+		        const formdata = new FormData();
+				formdata.append("fileToUpload", file);
+
+				const requestOptions = {
+				  method: 'POST',
+				  body: formdata,
+				  redirect: 'follow'
+				};
+
+				fetch("https://bhaveshnetflix.live/web_api/upload_image.php", requestOptions)
+				  .then(response => response.json())
+				  .then(result => {
+				  	const { isSuccess, errorMsg } = result;
+
+				  	console.log(isSuccess, errorMsg);
+
+				  	if (isSuccess == true) {
+				  		// console.log(file.name);
+
+				  		const imageUrl = document.getElementById("imageUrl");
+                        imageUrl.value = `https://bhaveshnetflix.live/web_api/uploads/`+file.name;
+
+				  		// console.log(imageUrl.value);
+
+		                const fileNameDisplay = document.getElementById("video-uploader");
+		                fileNameDisplay.textContent = 'UPLOADED';
+		                btn.parentElement.style.display = 'none';
+				  	}
+
+				  	else {
+				  		alert(`${errorMsg}`);
+				  		const fileNameDisplay = fileInput.nextElementSibling; // The second sibling is the file-name span
+		                fileNameDisplay.textContent = "No file chosen";
+		            	return;
+				  	}
+				  })
+				  .catch(error => console.log('error', error));
+	        }
+		})
+	</script>
+
+  <%- include("../includes/end.ejs"); %>
+</body>

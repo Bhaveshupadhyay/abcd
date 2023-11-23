@@ -1,0 +1,37 @@
+		.navbar-brand {
+      color: white !important;
+		}
+
+		/* Override Bootstrap's default link color */
+    .navbar-nav .nav-link {
+      color: white !important;
+    }
+        
+    /* Override Bootstrap's active link color */
+    .navbar-nav .nav-link.active {
+      color: white !important;
+    }
+
+    .navbar-toggler {
+      background-color: white;
+      border-color: black;
+    }
+
+    /* Change style of navbar-toggler when active */
+    .navbar-toggler:focus {
+      background-color: white;
+      border-color: black;
+    }
+
+        /* Add transition effects to anchor tags and buttons */
+    .navbar-nav a.nav-link,
+    .navbar-nav .btn {
+        transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease; /* Transition color, background-color, and transform over 0.3 seconds */
+    }
+
+    /* Apply the hover effect */
+    .navbar-nav a.nav-link:hover,
+    .navbar-nav .btn:hover {
+        color: white; /* Change the color when hovered */
+        transform: scale(1.05); /* Apply a slight scale effect when hovered */
+    }

@@ -1,0 +1,159 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style>
+		* {
+			font-family: Roboto,sans-serif;
+		}
+		.one {
+			background: #36C6D3;
+		}
+		.two {
+			background: green;
+		}
+		.three {
+			background: red;
+		}
+		.pgt2 {
+	      	background: white;
+	      	color: black;
+	      	border: 2px solid black;
+	      	text-decoration: none;
+	      	border-radius: 25px;
+	      	font-weight: 500;
+	    }
+	    .page-item a:hover {
+	    	background: red;
+	    	color: white;
+	    }
+	    .iactive {
+      		background: black;
+      		color: white;
+    	}
+
+    	#firstPagination {
+    		display: none;
+    	}
+
+    	.fa-pen:hover {
+    		color: #33a413 !important;
+    	}
+
+    	.fa-trash:hover {
+    		color: #f50000 !important;
+    	}
+
+    	@media (max-width: 500px) {
+    		#secondPagination {
+    			display: none;
+    		}
+    		#firstPagination {
+    			margin-left: 50px;
+    			display: block;
+    		    overflow-x: auto;
+    		}
+    	}
+	</style>
+
+	<header class="header1">
+	  	<%- include('../includes/navbar.ejs'); %>
+	</header>
+
+  	<section>
+	    <div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+	      <div class="row">
+	      	<%- include('../includes/navbar1.ejs'); %>
+
+	        <%- include('../includes/navbar2.ejs'); %>
+
+	        <div class="col border bg-light text-black" id="section1">
+				<p class="mt-2" style="font-size: 13px;">
+					<i class="fa-solid fa-house" style="color: #aab3bb;"></i> Dashboard / Ecommerce / Labels
+				</p>
+
+				<div class="mt-2 text-center">
+			        <% if(errorMessage) { %>
+			          	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+			        <% } %>
+		    	</div>
+
+				<div class="mt-4 d-flex justify-content-between">
+					<div class="dropdown">
+					  <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					    Bulk Actions
+					  </button>
+					  <ul class="dropdown-menu">
+					    <li><a class="dropdown-item" href="#">Action</a></li>
+					    <li><a class="dropdown-item" href="#">Another action</a></li>
+					    <li><a class="dropdown-item" href="#">Something else here</a></li>
+					  </ul>
+					</div>
+					<form class="d-flex" role="search">
+				        <input class="form-control me-2" id="search" type="search" placeholder="Search" aria-label="Search">
+				    </form>
+				</div>
+
+				<div class="mt-5 table-responsive">
+					<table class="table table-striped table-hover">
+						<thead>
+						    <tr>
+						      <th scope="col">
+						      	<input class="table-check-all" data-set=".dataTable .checkboxes" type="checkbox">
+						      </th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">ID</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">NAME</th>
+						      <th scope="col" style="font-size: 11px; color: #AFAFAF;">OPERATIONS</th>
+						    </tr>
+						</thead>
+
+						<tbody id="dataTableBody">
+							<tr>
+								<th><input class="table-check-all" data-set=".dataTable .checkboxes" type="checkbox"></th>      	
+								<th style="font-size: 14px; color: #212529;">1</th>
+								<td class="tCA" style="font-size: 14px; color: #212529;">
+								    fr
+								</td>
+								<td class="view" style="font-size: 14px; color: #212529;">
+								    <a href="/v1/faq/fr" class="btn vClass" style="text-decoration: none; color: white; background: #0dcaf0; border-radius: 5px;">View</a>
+								</td>
+							</tr>
+							<tr>
+								<th><input class="table-check-all" data-set=".dataTable .checkboxes" type="checkbox"></th>      	
+								<th style="font-size: 14px; color: #212529;">2</th>
+								<td class="tCA" style="font-size: 14px; color: #212529;">
+								    en_US
+								</td>
+								<td class="view" style="font-size: 14px; color: #212529;">
+								    <a href="/v1/faq/en_US" class="btn vClass" style="text-decoration: none; color: white; background: #0dcaf0; border-radius: 5px;">View</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</section>
+
+	<script src="/script3.js"></script>
+
+	<script type="text/javascript">
+	    const searchInput = document.getElementById("search");
+
+		const dataTableBody = document.getElementById('dataTableBody');
+		const rows = Array.from(document.querySelectorAll('#dataTableBody tr'));
+
+		searchInput.addEventListener('input', function () {
+		  const searchTerm = this.value.toLowerCase();
+
+		  rows.forEach(row => {
+		    const visible = row.innerText.toLowerCase().includes(searchTerm);
+		    row.style.display = visible ? 'table-row' : 'none';
+		  });
+		});
+	</script>
+
+	<%- include("../includes/end.ejs"); %>
+</body>

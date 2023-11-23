@@ -1,0 +1,117 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style>
+		body {
+			font-family: Roboto,sans-serif;
+		}
+
+		label {
+			font-size: 14px;
+		}
+
+		.tabs:hover {
+			color: black !important;
+		}
+
+		.dName {
+			color: #337AB7;
+			font-size: 14px;
+		}
+
+		.dName:hover {
+			color: #337AB7 !important;
+		}
+	</style>
+
+	<header class="header1">
+	  	<%- include('../includes/navbar.ejs'); %>
+	</header>
+
+  	<section>
+	    <div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+	      	<div class="row">
+		      	<%- include('../includes/navbar1.ejs'); %>
+
+	        	<%- include('../includes/navbar2.ejs'); %>
+
+		       	<div class="col border text-black p-0" id="section1" style="background: #eef1f5;">
+					<p class="mt-3 pt-2 pb-2 ms-2" style="font-size: 13px;">
+		        		<i class="fa-solid fa-house me-2" style="color: #333333;"></i>
+		        		<a href="/v1/home" class="me-2 tabs" style="text-decoration: none; color: black;">Dashboard</a><span class="me-2">/</span>
+		        		<a href="/v1/faq" class="me-2 tabs" style="text-decoration: none; color: black;">FAQ</a><span class="me-2">/</span>
+		        		<a class="me-2 tabs" style="text-decoration: none; color: grey;">
+		        			Edit Faq "<%= lang %>"
+		        		</a>
+		        	</p>
+
+		        	<div class="row ms-5 me-5 mt-5 bg-light p-0">
+			        	<div class="col-12 text-center">
+						    <% if(errorMessage) { %>
+						        <div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+						    <% } %>
+					    </div>
+					    <div class="col-12 border">
+					    	<form action="/v1/postEditFaqs" method="POST">
+					    	  <div class="mb-3">
+							    <label for="Input1" class="form-label">Id</label>
+							    <input type="number" class="form-control" id="Input1" name="id" placeholder="ID" value="<%= data[0].faqs_id %>" readonly>
+							  </div>
+					    	  <div class="mb-3">
+								<label for="Input2" class="form-label">Question</label>
+								<textarea class="form-control" id="Input2" rows="5" name="question">
+									<%- data[0].question %>
+								</textarea>
+							  </div>
+							  <div class="mb-3">
+								<label for="Input5" class="form-label">Answer</label>
+								<textarea class="form-control" id="Input5" rows="5" name="answer">
+									<%- data[0].answer %>
+								</textarea>
+							  </div>
+							  <div class="mb-3">
+								<label for="Input6" class="form-label">Status</label>
+							  	<select class="form-select" id="Input6" name="status" style="text-transform: capitalize;">
+								  <option value="<%= data[0].status %>" selected>
+								  	<%= data[0].status %>
+								  </option>
+								</select>
+							  </div>
+							  <div class="mb-3">
+							    <label for="Input3" class="form-label">Created At</label>
+							    <input type="text" class="form-control" id="Input3" name="created_at" placeholder="Created_At" value="<%= data[0].created_at ? data[0].created_at : '' %>" readonly>
+							  </div>
+							  <div class="mb-3">
+							    <label for="Input4" class="form-label">Updated At</label>
+							    <input type="text" class="form-control" id="Input4" name="updated_at" placeholder="Updated_At" value="<%= data[0].updated_at ? data[0].updated_at : '' %>" readonly>
+							  </div>
+							  <input type="hidden" name="product_id" value="<%= data[0].faqs_id %>">
+							  <input type="hidden" name="lang" value="<%= lang %>">
+							  <button type="submit" class="btn p-1" style="background: #0dcaf0; color: white;">Save</button>
+							</form>
+					    </div>
+					</div>
+		        </div>
+		    </div>
+		</div>
+	</section>
+
+	<script src="/script3.js"></script>
+
+	<script type="text/javascript">
+		const Input2 = document.getElementById("Input2");
+		const Input5 = document.getElementById("Input5");
+
+		const descriptionLines1 = Input2.textContent.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
+		const descriptionLines2 = Input5.textContent.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
+
+		console.log(descriptionLines1, descriptionLines2);
+
+		Input2.textContent = descriptionLines1;
+		Input5.textContent = descriptionLines2;
+	</script>
+
+  <%- include("../includes/end.ejs"); %>
+</body>
